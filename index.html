@@ -1,218 +1,227 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NetPulse Analytics - Network & Signal Simulator</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <style>
-        :root {
-            --bg-color: #0f172a;
-            --card-bg: #1e293b;
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-            --accent-blue: #38bdf8;
-            --accent-green: #4ade80;
-            --accent-red: #f87171;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NetPulse Analytics - Network & Signal Simulator</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    :root {
+      --bg-color: #0f172a;
+      --card-bg: #1e293b;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --accent-blue: #38bdf8;
+      --accent-green: #4ade80;
+      --accent-red: #f87171;
+    }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-        }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
 
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            padding: 24px;
-        }
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      padding: 24px;
+    }
 
-        header {
-            margin-bottom: 24px;
-            border-bottom: 1px solid #334155;
-            padding-bottom: 16px;
-        }
+    header {
+      margin-bottom: 24px;
+      border-bottom: 1px solid #334155;
+      padding-bottom: 16px;
+    }
 
-        header h1 { font-size: 1.8rem; color: var(--accent-blue); }
-        header p { color: var(--text-muted); font-size: 0.95rem; margin-top: 4px; }
+    header h1 { font-size: 1.8rem; color: var(--accent-blue); }
+    header p { color: var(--text-muted); font-size: 0.95rem; margin-top: 4px; }
 
-        .dashboard-grid {
-            display: grid;
-            grid-template-columns: 300px 1fr;
-            gap: 24px;
-        }
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: 300px 1fr;
+      gap: 24px;
+    }
 
-        .control-panel {
-            background-color: var(--card-bg);
-            padding: 20px;
-            border-radius: 12px;
-            height: fit-content;
-            border: 1px solid #334155;
-        }
+    .control-panel {
+      background-color: var(--card-bg);
+      padding: 20px;
+      border-radius: 12px;
+      height: fit-content;
+      border: 1px solid #334155;
+    }
 
-        .control-group {
-            margin-bottom: 20px;
-        }
+    .control-group { margin-bottom: 20px; }
 
-        label {
-            display: block;
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            margin-bottom: 8px;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
+    label {
+      display: block;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
 
-        select, input[type="range"] {
-            width: 100%;
-            background: #0f172a;
-            color: var(--text-main);
-            border: 1px solid #334155;
-            padding: 8px;
-            border-radius: 6px;
-            outline: none;
-        }
+    select, input[type="range"] {
+      width: 100%;
+      background: #0f172a;
+      color: var(--text-main);
+      border: 1px solid #334155;
+      padding: 8px;
+      border-radius: 6px;
+      outline: none;
+    }
 
-        .range-value {
-            display: block;
-            text-align: right;
-            font-size: 0.9rem;
-            color: var(--accent-blue);
-            margin-top: 4px;
-            font-weight: bold;
-        }
+    .range-value {
+      display: block;
+      text-align: right;
+      font-size: 0.9rem;
+      color: var(--accent-blue);
+      margin-top: 4px;
+      font-weight: bold;
+    }
 
-        .main-content {
-            display: flex;
-            flex-direction: column;
-            gap: 24px;
-        }
+    .main-content {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
 
-        .metrics-row {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 16px;
-        }
+    .metrics-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
 
-        .metric-card {
-            background-color: var(--card-bg);
-            padding: 16px;
-            border-radius: 10px;
-            border: 1px solid #334155;
-        }
+    .metric-card {
+      background-color: var(--card-bg);
+      padding: 16px;
+      border-radius: 10px;
+      border: 1px solid #334155;
+    }
 
-        .metric-card .title { font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; }
-        .metric-card .value { font-size: 1.4rem; font-weight: bold; margin-top: 6px; color: var(--text-main); }
+    .metric-card .title {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+    }
 
-        .charts-row {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 24px;
-        }
+    .metric-card .value {
+      font-size: 1.4rem;
+      font-weight: bold;
+      margin-top: 6px;
+      color: var(--text-main);
+    }
 
-        .chart-container {
-            background-color: var(--card-bg);
-            padding: 20px;
-            border-radius: 12px;
-            border: 1px solid #334155;
-            height: 320px;
-        }
+    .charts-row {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+    }
 
-        .log-container {
-            background-color: var(--card-bg);
-            padding: 20px;
-            border-radius: 12px;
-            border: 1px solid #334155;
-        }
+    .chart-container {
+      background-color: var(--card-bg);
+      padding: 20px;
+      border-radius: 12px;
+      border: 1px solid #334155;
+      height: 320px;
+    }
 
-        .log-terminal {
-            background-color: #090d16;
-            font-family: "Courier New", Courier, monospace;
-            font-size: 0.85rem;
-            padding: 12px;
-            border-radius: 6px;
-            height: 180px;
-            overflow-y: auto;
-            color: #a7f3d0;
-            line-height: 1.4;
-        }
+    .log-container {
+      background-color: var(--card-bg);
+      padding: 20px;
+      border-radius: 12px;
+      border: 1px solid #334155;
+    }
 
-        .log-line { margin-bottom: 4px; }
-        .log-dropped { color: var(--accent-red); }
-        .log-anomaly { color: #f59e0b; font-weight: bold; }
+    .log-terminal {
+      background-color: #090d16;
+      font-family: "Courier New", Courier, monospace;
+      font-size: 0.85rem;
+      padding: 12px;
+      border-radius: 6px;
+      height: 180px;
+      overflow-y: auto;
+      color: #a7f3d0;
+      line-height: 1.4;
+    }
 
-        @media (max-width: 1024px) {
-            .dashboard-grid { grid-template-columns: 1fr; }
-            .metrics-row { grid-template-columns: repeat(2, 1fr); }
-            .charts-row { grid-template-columns: 1fr; }
-        }
-    </style>
+    .log-line { margin-bottom: 4px; }
+    .log-dropped { color: var(--accent-red); }
+    .log-anomaly { color: #f59e0b; font-weight: bold; }
+
+    @media (max-width: 1024px) {
+      .dashboard-grid { grid-template-columns: 1fr; }
+      .metrics-row { grid-template-columns: repeat(2, 1fr); }
+      .charts-row { grid-template-columns: 1fr; }
+    }
+  </style>
 </head>
 <body>
 
-    <header>
-        <h1>NetPulse Analytics Engine</h1>
-        <p>Full-Stack Physical Channel Signal Attenuation & Network Layer Simulation</p>
-    </header>
+  <header>
+    <h1>NetPulse Analytics Engine</h1>
+    <p>Full-Stack Physical Channel Signal Attenuation & Network Layer Simulation</p>
+  </header>
 
-    <div class="dashboard-grid">
-        <div class="control-panel">
-            <div class="control-group">
-                <label for="environment">Channel Environment (n)</label>
-                <select id="environment">
-                    <option value="rural">Rural / Free Space (n=2.0)</option>
-                    <option value="urban" selected>Urban / Obstacles (n=3.5)</option>
-                    <option value="dense_indoor">Dense Indoor (n=4.5)</option>
-                </select>
-            </div>
+  <div class="dashboard-grid">
+    <div class="control-panel">
+      <div class="control-group">
+        <label for="environment">Channel Environment (n)</label>
+        <select id="environment">
+          <option value="rural">Rural / Free Space (n=2.0)</option>
+          <option value="urban" selected>Urban / Obstacles (n=3.5)</option>
+          <option value="dense_indoor">Dense Indoor (n=4.5)</option>
+        </select>
+      </div>
 
-            <div class="control-group">
-                <label for="distance">Transmitter Distance</label>
-                <input type="range" id="distance" min="1" max="150" value="50">
-                <span class="range-value" id="distance-val">50 m</span>
-            </div>
-        </div>
-
-        <div class="main-content">
-            <div class="metrics-row">
-                <div class="metric-card">
-                    <div class="title">Path Loss</div>
-                    <div class="value" id="metric-pathloss">0.00 dB</div>
-                </div>
-                <div class="metric-card">
-                    <div class="title">Rx Power</div>
-                    <div class="value" id="metric-rxpower">0.00 dBm</div>
-                </div>
-                <div class="metric-card">
-                    <div class="title">Bit Error Rate (BER)</div>
-                    <div class="value" id="metric-ber" style="color: var(--accent-blue);">0.0000e0</div>
-                </div>
-                <div class="metric-card">
-                    <div class="title">Link Status</div>
-                    <div class="value" id="metric-status">—</div>
-                </div>
-            </div>
-
-            <div class="charts-row">
-                <div class="chart-container">
-                    <canvas id="throughputChart"></canvas>
-                </div>
-                <div class="chart-container">
-                    <canvas id="berChart"></canvas>
-                </div>
-            </div>
-
-            <div class="log-container">
-                <label style="margin-bottom: 10px;">Live Packet Stream Telemetry logs</label>
-                <div class="log-terminal" id="log-terminal">
-                    <div class="log-line">System running. Awaiting mathematical data arrays...</div>
-                </div>
-            </div>
-        </div>
+      <div class="control-group">
+        <label for="distance">Transmitter Distance</label>
+        <input type="range" id="distance" min="1" max="150" value="50">
+        <span class="range-value" id="distance-val">50 m</span>
+      </div>
     </div>
 
-    <script src="script.js"></script>
+    <div class="main-content">
+      <div class="metrics-row">
+        <div class="metric-card">
+          <div class="title">Path Loss</div>
+          <div class="value" id="metric-pathloss">0.00 dB</div>
+        </div>
+        <div class="metric-card">
+          <div class="title">Rx Power</div>
+          <div class="value" id="metric-rxpower">0.00 dBm</div>
+        </div>
+        <div class="metric-card">
+          <div class="title">Bit Error Rate (BER)</div>
+          <div class="value" id="metric-ber" style="color: var(--accent-blue);">0.0000e0</div>
+        </div>
+        <div class="metric-card">
+          <div class="title">Link Status</div>
+          <div class="value" id="metric-status">—</div>
+        </div>
+      </div>
+
+      <div class="charts-row">
+        <div class="chart-container">
+          <canvas id="throughputChart"></canvas>
+        </div>
+        <div class="chart-container">
+          <canvas id="berChart"></canvas>
+        </div>
+      </div>
+
+      <div class="log-container">
+        <label style="margin-bottom: 10px;">Live Packet Stream Telemetry logs</label>
+        <div class="log-terminal" id="log-terminal">
+          <div class="log-line">System running. Awaiting mathematical data arrays...</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
 </body>
 </html>
+    
